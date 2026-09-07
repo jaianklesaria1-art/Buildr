@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import SwipeDeck, { type SwipeChoice } from "@/components/ui/swipe-deck";
 import AppHeader from "@/components/app/AppHeader";
@@ -86,14 +86,50 @@ export default function FeedApp({
 }) {
   const [mode, setMode] = useState<Zone>("JOB_SEEKER");
   const [match, setMatch] = useState<{ matchId: string; title: string; zone: Zone } | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const previouslyFocused = useRef<HTMLElement | null>(null);
 
   const activeMode = MODES.find((m) => m.key === mode)!;
   const isComplete = profileComplete[mode];
 
+  useEffect(() => {
+    if (!match) return;
+    previouslyFocused.current = document.activeElement as HTMLElement;
+    dialogRef.current?.focus();
+
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setMatch(null);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const focusables = dialogRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled])'
+      );
+      if (!focusables || focusables.length === 0) return;
+      const list = Array.from(focusables);
+      const first = list[0];
+      const last = list[list.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      previouslyFocused.current?.focus?.();
+    };
+  }, [match]);
+
   return (
     <>
     <AppHeader active="feed" userName={userName} />
-    <main className="mx-auto flex max-w-md flex-col px-4 py-8">
+    <main id="main-content" className="mx-auto flex max-w-md flex-col px-4 py-8">
       <div className="mb-6 flex justify-center gap-2">
         {MODES.map((m) => (
           <button
@@ -192,9 +228,16 @@ export default function FeedApp({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            onClick={() => setMatch(null)}
           >
             <motion.div
-              className="relative w-full max-w-sm overflow-hidden rounded-3xl bg-white p-8 text-center shadow-2xl"
+              ref={dialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="match-modal-title"
+              tabIndex={-1}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-sm overflow-hidden rounded-3xl bg-white p-8 text-center shadow-2xl outline-none"
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.7, opacity: 0 }}
@@ -212,7 +255,9 @@ export default function FeedApp({
               <p className="relative mt-4 text-xs font-semibold uppercase tracking-wide text-neutral-500">
                 It&apos;s a match
               </p>
-              <h2 className="relative mt-1 text-2xl font-bold">{match.title}</h2>
+              <h2 id="match-modal-title" className="relative mt-1 text-2xl font-bold">
+                {match.title}
+              </h2>
               <p className="relative mt-1 text-sm text-neutral-500">You both said yes — start the conversation.</p>
               <div className="relative mt-6 flex flex-col gap-2">
                 <a

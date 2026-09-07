@@ -92,6 +92,12 @@ export default function Landing() {
       </div>
 
       {/* Header */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-full focus:bg-neutral-900 focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white dark:focus:bg-white dark:focus:text-neutral-900"
+      >
+        Skip to content
+      </a>
       <header className="sticky top-0 z-50 border-b border-transparent bg-white/70 backdrop-blur-lg dark:bg-[#0a0a0f]/70">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <a href="/" className="text-xl font-bold tracking-tight">
@@ -123,6 +129,8 @@ export default function Landing() {
             <button
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav-menu"
               className="flex h-11 w-11 items-center justify-center rounded-lg text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-white/10"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -132,7 +140,7 @@ export default function Landing() {
           </div>
         </div>
         {mobileOpen && (
-          <div className="flex flex-col gap-1 border-t border-neutral-100 px-6 py-4 text-sm font-medium dark:border-white/10 md:hidden">
+          <div id="mobile-nav-menu" className="flex flex-col gap-1 border-t border-neutral-100 px-6 py-4 text-sm font-medium dark:border-white/10 md:hidden">
             <a href="#zones" className="rounded-lg px-3 py-2 hover:bg-neutral-100 dark:hover:bg-white/10">Zones</a>
             <a href="#how" className="rounded-lg px-3 py-2 hover:bg-neutral-100 dark:hover:bg-white/10">How it works</a>
             <a href="#faq" className="rounded-lg px-3 py-2 hover:bg-neutral-100 dark:hover:bg-white/10">FAQ</a>
@@ -143,7 +151,7 @@ export default function Landing() {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto flex max-w-4xl flex-col items-center px-6 pt-20 pb-16 text-center sm:pt-28">
+      <section id="main-content" className="mx-auto flex max-w-4xl flex-col items-center px-6 pt-20 pb-16 text-center sm:pt-28">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs font-medium text-neutral-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-neutral-300">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-500 opacity-75" />

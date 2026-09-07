@@ -16,6 +16,13 @@ export default function AppHeader({
   userName: string;
 }) {
   return (
+    <>
+    <a
+      href="#main-content"
+      className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-neutral-900 focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
+    >
+      Skip to content
+    </a>
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/90 backdrop-blur-lg">
       <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-6">
@@ -62,5 +69,6 @@ export default function AppHeader({
         ))}
       </nav>
     </header>
+    </>
   );
 }

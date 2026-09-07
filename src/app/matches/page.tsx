@@ -34,7 +34,7 @@ export default async function MatchesPage() {
   return (
     <>
       <AppHeader active="matches" userName={session.user.name ?? ""} />
-      <main className="mx-auto max-w-2xl px-4 py-8">
+      <main id="main-content" className="mx-auto max-w-2xl px-4 py-8">
         <h1 className="text-2xl font-semibold">Matches</h1>
         <p className="mt-1 text-sm text-neutral-500">
           Everyone you&apos;ve mutually matched with, across all zones.

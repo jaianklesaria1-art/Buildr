@@ -72,7 +72,7 @@ export default function Chat({
   }
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden">
+    <main className="flex flex-1 flex-col overflow-hidden">
       {locked && (
         <div className="border-b border-amber-200 bg-amber-50 px-4 py-4">
           <div className="mx-auto max-w-lg">
@@ -99,7 +99,13 @@ export default function Chat({
         </div>
       )}
 
-      <div className="mx-auto flex w-full max-w-lg flex-1 flex-col overflow-y-auto px-4 py-4">
+      <div
+        role="log"
+        aria-live="polite"
+        aria-relevant="additions"
+        aria-label={`Conversation with ${counterpartName}`}
+        className="mx-auto flex w-full max-w-lg flex-1 flex-col overflow-y-auto px-4 py-4"
+      >
         {messages.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center text-center">
             <p className="text-sm font-medium text-neutral-600">You matched with {counterpartName}</p>
@@ -155,6 +161,6 @@ export default function Chat({
           </button>
         </div>
       </form>
-    </div>
+    </main>
   );
 }
