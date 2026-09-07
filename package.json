@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "node scripts/seed.mjs",
+    "simulate-match": "node scripts/simulate-cofounder-match.mjs"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
