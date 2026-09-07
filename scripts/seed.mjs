@@ -78,6 +78,50 @@ const EMPLOYERS = [
       },
     ],
   },
+  {
+    email: "team@loopline.buildr.test",
+    name: "Loopline",
+    jobs: [
+      {
+        title: "Frontend Engineer",
+        company: "Loopline",
+        description: "Build the core UI kit and component library used across our product.",
+        skillsRequired: ["React", "Design systems", "Figma"],
+        location: "Remote",
+        stage: "Seed",
+      },
+      {
+        title: "UX Researcher",
+        company: "Loopline",
+        description: "Run usability studies and turn findings into concrete design changes.",
+        skillsRequired: ["Figma", "User research", "Prototyping"],
+        location: "Bengaluru",
+        stage: "Seed",
+      },
+    ],
+  },
+  {
+    email: "jobs@kestrelanalytics.buildr.test",
+    name: "Kestrel Analytics",
+    jobs: [
+      {
+        title: "DevOps Engineer",
+        company: "Kestrel Analytics",
+        description: "Own our CI/CD pipeline and Kubernetes infra as we scale to 10x traffic.",
+        skillsRequired: ["AWS", "Docker", "Kubernetes"],
+        location: "Remote",
+        stage: "Series A",
+      },
+      {
+        title: "Sales Development Rep",
+        company: "Kestrel Analytics",
+        description: "First SDR hire — build the outbound playbook for our analytics platform.",
+        skillsRequired: ["Sales", "Communication", "CRM"],
+        location: "Delhi",
+        stage: "Series A",
+      },
+    ],
+  },
 ];
 
 const CLIENTS = [
