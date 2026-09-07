@@ -178,6 +178,53 @@ const CLIENTS = [
       },
     ],
   },
+  {
+    email: "hello@fernpixel.buildr.test",
+    name: "Fernpixel",
+    gigs: [
+      {
+        title: "Social media content pack",
+        description: "A month of Instagram post templates and captions for a D2C skincare brand.",
+        skillsRequired: ["Content creation", "Instagram", "Canva"],
+        budgetMin: 8000,
+        budgetMax: 15000,
+      },
+      {
+        title: "Logo & brand identity",
+        description: "Full logo, color palette, and brand guideline doc for a new fintech app.",
+        skillsRequired: ["Branding", "Illustrator"],
+        budgetMin: 12000,
+        budgetMax: 20000,
+      },
+    ],
+  },
+  {
+    email: "ops@northstarventures.buildr.test",
+    name: "Northstar Ventures Ops",
+    gigs: [
+      {
+        title: "Pitch deck design",
+        description: "Redesign a 15-slide seed-round pitch deck for visual clarity and investor polish.",
+        skillsRequired: ["Figma", "Presentation design"],
+        budgetMin: 10000,
+        budgetMax: 18000,
+      },
+      {
+        title: "Bookkeeping setup",
+        description: "Set up monthly bookkeeping in Zoho Books for a 6-person startup.",
+        skillsRequired: ["Accounting", "Zoho Books"],
+        budgetMin: 8000,
+        budgetMax: 15000,
+      },
+      {
+        title: "Legal contract review",
+        description: "Review and redline 5 vendor contracts before signing.",
+        skillsRequired: ["Contract review", "Legal"],
+        budgetMin: 15000,
+        budgetMax: 25000,
+      },
+    ],
+  },
 ];
 
 const COFOUNDERS = [
@@ -246,6 +293,39 @@ const COFOUNDERS = [
     equityExpectation: "15-20%",
     ideaSummary: "Marketplace for verified carbon offset credits targeted at Indian SMEs.",
     location: "Chennai",
+  },
+  {
+    email: "karan.malhotra@buildr.test",
+    name: "Karan Malhotra",
+    skills: ["Finance", "Legal"],
+    stage: "SEED",
+    sector: "Insurtech",
+    riskTolerance: "LOW",
+    equityExpectation: "10-15%",
+    ideaSummary: "Micro-insurance platform for gig workers, underwritten per-shift rather than monthly.",
+    location: "Gurugram",
+  },
+  {
+    email: "ishita.bansal@buildr.test",
+    name: "Ishita Bansal",
+    skills: ["Data Science", "Backend"],
+    stage: "PROTOTYPE",
+    sector: "AgriTech",
+    riskTolerance: "MEDIUM",
+    equityExpectation: "15-20%",
+    ideaSummary: "Crop yield prediction using satellite imagery for smallholder farmers, prototype tested across 3 districts.",
+    location: "Ahmedabad",
+  },
+  {
+    email: "aditya.rao@buildr.test",
+    name: "Aditya Rao",
+    skills: ["Hardware", "Product"],
+    stage: "IDEA",
+    sector: "CleanTech",
+    riskTolerance: "HIGH",
+    equityExpectation: "25-35%",
+    ideaSummary: "Modular solar charging stations for electric two-wheelers, designed for tier-2 city apartment complexes.",
+    location: "Jaipur",
   },
 ];
 
