@@ -59,6 +59,7 @@ export default async function FeedPage() {
         riskTolerance: c.riskTolerance,
         skills: c.skills,
       }))}
+      userName={user.name}
     />
   );
 }

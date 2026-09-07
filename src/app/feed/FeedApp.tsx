@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import SwipeDeck, { type SwipeChoice } from "@/components/ui/swipe-deck";
+import AppHeader from "@/components/app/AppHeader";
 
 type Zone = "JOB_SEEKER" | "COFOUNDER" | "FREELANCER";
 
@@ -76,22 +77,26 @@ export default function FeedApp({
   jobs,
   gigs,
   cofounders,
+  userName,
 }: {
   zones: Zone[];
   profileComplete: Record<Zone, boolean>;
   jobs: Job[];
   gigs: Gig[];
   cofounders: Cofounder[];
+  userName: string;
 }) {
   const availableModes = MODES.filter((m) => zones.includes(m.key));
   const [mode, setMode] = useState<Zone>(availableModes[0]?.key ?? "JOB_SEEKER");
-  const [match, setMatch] = useState<{ matchId: string; title: string } | null>(null);
+  const [match, setMatch] = useState<{ matchId: string; title: string; zone: Zone } | null>(null);
 
   const activeMode = MODES.find((m) => m.key === mode)!;
   const isComplete = profileComplete[mode];
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col px-4 py-8">
+    <>
+    <AppHeader active="feed" userName={userName} />
+    <main className="mx-auto flex max-w-md flex-col px-4 py-8">
       <div className="mb-6 flex justify-center gap-2">
         {availableModes.map((m) => (
           <button
@@ -134,7 +139,7 @@ export default function FeedApp({
               job.id,
               choice === "right" ? "APPLIED" : "PASSED"
             );
-            if (matched && matchId) setMatch({ matchId, title: `${job.title} at ${job.company}` });
+            if (matched && matchId) setMatch({ matchId, title: `${job.title} at ${job.company}`, zone: "JOB_SEEKER" });
           }}
         >
           {(job) => <JobCard job={job} />}
@@ -155,7 +160,7 @@ export default function FeedApp({
               gig.id,
               choice === "right" ? "APPLIED" : "PASSED"
             );
-            if (matched && matchId) setMatch({ matchId, title: gig.title });
+            if (matched && matchId) setMatch({ matchId, title: gig.title, zone: "FREELANCER" });
           }}
         >
           {(gig) => <GigCard gig={gig} />}
@@ -176,7 +181,7 @@ export default function FeedApp({
               profile.id,
               choice === "right" ? "INTERESTED" : "PASSED"
             );
-            if (matched && matchId) setMatch({ matchId, title: profile.name });
+            if (matched && matchId) setMatch({ matchId, title: profile.name, zone: "COFOUNDER" });
           }}
         >
           {(profile) => <CofounderCard profile={profile} />}
@@ -192,25 +197,36 @@ export default function FeedApp({
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="w-full max-w-sm rounded-2xl bg-white p-8 text-center"
+              className="relative w-full max-w-sm overflow-hidden rounded-3xl bg-white p-8 text-center shadow-2xl"
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.7, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              <p className="text-3xl">🎉</p>
-              <h2 className="mt-2 text-2xl font-bold">It&apos;s a match!</h2>
-              <p className="mt-2 text-sm text-neutral-600">{match.title}</p>
-              <div className="mt-6 flex flex-col gap-2">
+              <div className={`absolute inset-x-0 top-0 h-24 bg-gradient-to-br opacity-90 ${ZONE_STYLE[match.zone].gradient}`} />
+              <motion.div
+                initial={{ scale: 0, rotate: -20 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: "spring", stiffness: 260, damping: 16, delay: 0.1 }}
+                className={`relative mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br text-2xl font-bold text-white shadow-lg ring-4 ring-white ${ZONE_STYLE[match.zone].gradient}`}
+              >
+                {initials(match.title)}
+              </motion.div>
+              <p className="relative mt-4 text-xs font-semibold uppercase tracking-wide text-neutral-400">
+                It&apos;s a match
+              </p>
+              <h2 className="relative mt-1 text-2xl font-bold">{match.title}</h2>
+              <p className="relative mt-1 text-sm text-neutral-500">You both said yes — start the conversation.</p>
+              <div className="relative mt-6 flex flex-col gap-2">
                 <a
                   href={`/matches/${match.matchId}`}
-                  className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white"
+                  className="rounded-full bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
                 >
                   Send a message
                 </a>
                 <button
                   onClick={() => setMatch(null)}
-                  className="rounded-md border border-neutral-300 px-4 py-2 text-sm font-medium"
+                  className="rounded-full border border-neutral-200 px-4 py-2.5 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-50"
                 >
                   Keep swiping
                 </button>
@@ -220,6 +236,7 @@ export default function FeedApp({
         )}
       </AnimatePresence>
     </main>
+    </>
   );
 }
 
