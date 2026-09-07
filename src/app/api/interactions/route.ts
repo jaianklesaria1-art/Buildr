@@ -46,8 +46,14 @@ export async function POST(request: Request) {
       prisma.cofounderProfile.findUnique({ where: { userId } }),
       prisma.cofounderProfile.findUnique({ where: { id: targetId } }),
     ]);
-    if (!myProfile || !theirProfile) {
+    if (!theirProfile) {
       return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+    }
+    // Browsing without a cofounder profile yet: the interest is recorded
+    // above, but there's nothing of theirs to reciprocate against, so no
+    // match can form until this user completes their own profile.
+    if (!myProfile) {
+      return NextResponse.json({ matched: false });
     }
 
     // A mutual pair should share exactly one chat thread. If they already

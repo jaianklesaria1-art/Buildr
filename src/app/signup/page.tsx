@@ -3,36 +3,19 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const ZONES = [
-  { value: "JOB_SEEKER", label: "Job Seeker", blurb: "Find roles at pre-seed to Series A startups" },
-  { value: "COFOUNDER", label: "Cofounder", blurb: "Find a technical or business cofounder" },
-  { value: "FREELANCER", label: "Freelancer", blurb: "Find gigs, set your own rate" },
-] as const;
-
 export default function SignupPage() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [zones, setZones] = useState<string[]>([]);
   const [consentAccepted, setConsentAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-
-  function toggleZone(zone: string) {
-    setZones((prev) =>
-      prev.includes(zone) ? prev.filter((z) => z !== zone) : [...prev, zone]
-    );
-  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
 
-    if (zones.length === 0) {
-      setError("Pick at least one zone to continue.");
-      return;
-    }
     if (!consentAccepted) {
       setError("You need to accept the data notice to sign up.");
       return;
@@ -42,7 +25,7 @@ export default function SignupPage() {
     const res = await fetch("/api/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, zones, consentAccepted }),
+      body: JSON.stringify({ name, email, password, consentAccepted }),
     });
     setSubmitting(false);
 
@@ -59,7 +42,8 @@ export default function SignupPage() {
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 py-16">
       <h1 className="text-2xl font-semibold">Create your buildr. account</h1>
       <p className="mt-1 text-sm text-neutral-500">
-        One account, pick the zones that matter to you.
+        One account, every zone. Browse and swipe right away — pick what you actually
+        want to focus on later.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-5">
@@ -94,33 +78,6 @@ export default function SignupPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium">Which zones are you active in?</label>
-          <div className="mt-2 flex flex-col gap-2">
-            {ZONES.map((zone) => (
-              <label
-                key={zone.value}
-                className={`flex cursor-pointer items-start gap-3 rounded-md border px-3 py-2 text-sm ${
-                  zones.includes(zone.value)
-                    ? "border-neutral-900 bg-neutral-50"
-                    : "border-neutral-300"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  className="mt-1"
-                  checked={zones.includes(zone.value)}
-                  onChange={() => toggleZone(zone.value)}
-                />
-                <span>
-                  <span className="font-medium">{zone.label}</span>
-                  <span className="block text-neutral-500">{zone.blurb}</span>
-                </span>
-              </label>
-            ))}
-          </div>
         </div>
 
         <div className="rounded-md border border-neutral-200 bg-neutral-50 p-3 text-xs text-neutral-600">

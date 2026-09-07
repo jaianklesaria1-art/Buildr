@@ -8,9 +8,6 @@ const signupSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(8),
-  zones: z
-    .array(z.enum(["JOB_SEEKER", "COFOUNDER", "FREELANCER"]))
-    .min(1, "Select at least one zone"),
   consentAccepted: z.literal(true, {
     message: "You must accept the data notice to sign up",
   }),
@@ -27,7 +24,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { name, email, password, zones, consentAccepted } = parsed.data;
+  const { name, email, password, consentAccepted } = parsed.data;
   void consentAccepted;
 
   const existing = await prisma.user.findUnique({ where: { email } });
@@ -45,7 +42,7 @@ export async function POST(request: Request) {
       name,
       email,
       passwordHash,
-      zones,
+      zones: ["JOB_SEEKER", "COFOUNDER", "FREELANCER"],
       consents: {
         create: {
           context: "signup",

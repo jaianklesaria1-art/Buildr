@@ -32,8 +32,6 @@ function skillsOverlap(a: string[], b: string[]): boolean {
 
 export async function jobFeedFor(userId: string) {
   const profile = await prisma.jobSeekerProfile.findUnique({ where: { userId } });
-  if (!profile) return [];
-
   const seen = await seenTargetIds(userId, "JOB_LISTING");
 
   const candidates = await prisma.jobListing.findMany({
@@ -41,13 +39,15 @@ export async function jobFeedFor(userId: string) {
     orderBy: { createdAt: "desc" },
   });
 
+  // No skills on file yet (or no profile at all) — browse everything so
+  // swiping works immediately; skills only refine the feed once set.
+  if (!profile || profile.skills.length === 0) return candidates.slice(0, 20);
+
   return candidates.filter((job) => skillsOverlap(profile.skills, job.skillsRequired)).slice(0, 20);
 }
 
 export async function gigFeedFor(userId: string) {
   const profile = await prisma.freelancerProfile.findUnique({ where: { userId } });
-  if (!profile) return [];
-
   const seen = await seenTargetIds(userId, "GIG_LISTING");
 
   const candidates = await prisma.gigListing.findMany({
@@ -55,18 +55,18 @@ export async function gigFeedFor(userId: string) {
     orderBy: { createdAt: "desc" },
   });
 
+  if (!profile || profile.skills.length === 0) return candidates.slice(0, 20);
+
   return candidates.filter((gig) => skillsOverlap(profile.skills, gig.skillsRequired)).slice(0, 20);
 }
 
 export async function cofounderFeedFor(userId: string) {
   const profile = await prisma.cofounderProfile.findUnique({ where: { userId } });
-  if (!profile) return [];
-
   const seen = await seenTargetIds(userId, "COFOUNDER_PROFILE");
 
   return prisma.cofounderProfile.findMany({
     where: {
-      id: { notIn: [...seen, profile.id] },
+      id: { notIn: profile ? [...seen, profile.id] : seen },
       userId: { not: userId },
       isComplete: true,
     },

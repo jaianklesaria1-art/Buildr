@@ -72,22 +72,19 @@ async function sendInteraction(
 }
 
 export default function FeedApp({
-  zones,
   profileComplete,
   jobs,
   gigs,
   cofounders,
   userName,
 }: {
-  zones: Zone[];
   profileComplete: Record<Zone, boolean>;
   jobs: Job[];
   gigs: Gig[];
   cofounders: Cofounder[];
   userName: string;
 }) {
-  const availableModes = MODES.filter((m) => zones.includes(m.key));
-  const [mode, setMode] = useState<Zone>(availableModes[0]?.key ?? "JOB_SEEKER");
+  const [mode, setMode] = useState<Zone>("JOB_SEEKER");
   const [match, setMatch] = useState<{ matchId: string; title: string; zone: Zone } | null>(null);
 
   const activeMode = MODES.find((m) => m.key === mode)!;
@@ -98,7 +95,7 @@ export default function FeedApp({
     <AppHeader active="feed" userName={userName} />
     <main className="mx-auto flex max-w-md flex-col px-4 py-8">
       <div className="mb-6 flex justify-center gap-2">
-        {availableModes.map((m) => (
+        {MODES.map((m) => (
           <button
             key={m.key}
             onClick={() => setMode(m.key)}
@@ -114,18 +111,18 @@ export default function FeedApp({
       </div>
 
       {!isComplete && (
-        <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-6 text-center text-sm text-neutral-600">
-          <p>{activeMode.emptyProfileLabel}</p>
+        <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-xs text-neutral-600">
+          <span>Add a profile to unlock skill-matched results and apply for real.</span>
           <a
             href={activeMode.profileHref}
-            className="mt-3 inline-block rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white"
+            className="shrink-0 rounded-full bg-neutral-900 px-3 py-1.5 font-medium text-white"
           >
-            Complete profile
+            Complete
           </a>
         </div>
       )}
 
-      {isComplete && mode === "JOB_SEEKER" && (
+      {mode === "JOB_SEEKER" && (
         <SwipeDeck
           items={jobs}
           itemKey={(j) => j.id}
@@ -146,7 +143,7 @@ export default function FeedApp({
         </SwipeDeck>
       )}
 
-      {isComplete && mode === "FREELANCER" && (
+      {mode === "FREELANCER" && (
         <SwipeDeck
           items={gigs}
           itemKey={(g) => g.id}
@@ -167,7 +164,7 @@ export default function FeedApp({
         </SwipeDeck>
       )}
 
-      {isComplete && mode === "COFOUNDER" && (
+      {mode === "COFOUNDER" && (
         <SwipeDeck
           items={cofounders}
           itemKey={(c) => c.id}

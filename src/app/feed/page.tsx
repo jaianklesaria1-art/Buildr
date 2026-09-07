@@ -19,16 +19,13 @@ export default async function FeedPage() {
   if (!user) redirect("/login");
 
   const [jobs, gigs, cofounders] = await Promise.all([
-    user.jobSeekerProfile?.isComplete ? jobFeedFor(user.id) : [],
-    user.freelancerProfile?.isComplete ? gigFeedFor(user.id) : [],
-    user.cofounderProfile?.isComplete ? cofounderFeedFor(user.id) : [],
+    jobFeedFor(user.id),
+    gigFeedFor(user.id),
+    cofounderFeedFor(user.id),
   ]);
 
   return (
     <FeedApp
-      zones={user.zones.filter((z): z is "JOB_SEEKER" | "COFOUNDER" | "FREELANCER" =>
-        ["JOB_SEEKER", "COFOUNDER", "FREELANCER"].includes(z)
-      )}
       profileComplete={{
         JOB_SEEKER: user.jobSeekerProfile?.isComplete ?? false,
         COFOUNDER: user.cofounderProfile?.isComplete ?? false,
