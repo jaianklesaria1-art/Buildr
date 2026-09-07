@@ -209,7 +209,7 @@ export default function FeedApp({
               >
                 {initials(match.title)}
               </motion.div>
-              <p className="relative mt-4 text-xs font-semibold uppercase tracking-wide text-neutral-400">
+              <p className="relative mt-4 text-xs font-semibold uppercase tracking-wide text-neutral-500">
                 It&apos;s a match
               </p>
               <h2 className="relative mt-1 text-2xl font-bold">{match.title}</h2>

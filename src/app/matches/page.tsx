@@ -64,7 +64,7 @@ export default async function MatchesPage() {
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline justify-between gap-2">
                   <p className="truncate font-medium">{m.counterpartName}</p>
-                  <span className="shrink-0 text-xs text-neutral-400">{relativeTime(m.lastMessageAt)}</span>
+                  <span className="shrink-0 text-xs text-neutral-500">{relativeTime(m.lastMessageAt)}</span>
                 </div>
                 <p className="truncate text-xs font-medium text-neutral-500">{m.contextLabel}</p>
                 <p className="mt-0.5 truncate text-sm text-neutral-600">

@@ -341,7 +341,7 @@ export default function Landing() {
             >
               Join for free
             </a>
-            <p className="mt-3 text-center text-xs text-neutral-400">More plans as we grow — no surprise paywalls.</p>
+            <p className="mt-3 text-center text-xs text-neutral-500 dark:text-neutral-400">More plans as we grow — no surprise paywalls.</p>
           </div>
         </div>
       </Section>
@@ -361,7 +361,7 @@ export default function Landing() {
                 <summary className="flex cursor-pointer list-none items-center justify-between font-medium">
                   {item.q}
                   <svg
-                    className="h-5 w-5 shrink-0 text-neutral-400 transition-transform group-open:rotate-45"
+                    className="h-5 w-5 shrink-0 text-neutral-500 transition-transform group-open:rotate-45 dark:text-neutral-400"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"

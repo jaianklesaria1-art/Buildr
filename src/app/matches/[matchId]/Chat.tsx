@@ -103,7 +103,7 @@ export default function Chat({
         {messages.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center text-center">
             <p className="text-sm font-medium text-neutral-600">You matched with {counterpartName}</p>
-            <p className="mt-1 text-sm text-neutral-400">Send the first message to break the ice.</p>
+            <p className="mt-1 text-sm text-neutral-500">Send the first message to break the ice.</p>
           </div>
         ) : (
           <div className="flex flex-col gap-2">
@@ -114,7 +114,7 @@ export default function Chat({
               return (
                 <div key={m.id}>
                   {showTime && (
-                    <p className="my-2 text-center text-xs text-neutral-400">{formatTime(m.createdAt)}</p>
+                    <p className="my-2 text-center text-xs text-neutral-500">{formatTime(m.createdAt)}</p>
                   )}
                   <div
                     className={`max-w-[75%] rounded-2xl px-3.5 py-2 text-sm leading-relaxed shadow-sm ${
