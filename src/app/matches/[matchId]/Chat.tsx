@@ -146,7 +146,7 @@ export default function Chat({
             type="submit"
             disabled={locked || sending || !draft.trim()}
             aria-label="Send message"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white transition-opacity hover:opacity-90 disabled:opacity-40"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="m22 2-7 20-4-9-9-4Z" />

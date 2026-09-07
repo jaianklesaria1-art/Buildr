@@ -99,7 +99,7 @@ export default function FeedApp({
           <button
             key={m.key}
             onClick={() => setMode(m.key)}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+            className={`flex min-h-[44px] items-center rounded-full px-4 text-sm font-semibold transition-colors ${
               mode === m.key
                 ? `bg-gradient-to-r text-white ${ZONE_STYLE[m.key].gradient}`
                 : "bg-neutral-100 text-neutral-600"

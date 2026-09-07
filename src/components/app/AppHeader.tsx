@@ -53,7 +53,7 @@ export default function AppHeader({
           <a
             key={item.key}
             href={item.href}
-            className={`flex-1 rounded-full px-3 py-1.5 text-center text-sm font-medium transition-colors ${
+            className={`flex min-h-[44px] flex-1 items-center justify-center rounded-full px-3 text-center text-sm font-medium transition-colors ${
               active === item.key ? "bg-neutral-900 text-white" : "text-neutral-600 hover:bg-neutral-100"
             }`}
           >
