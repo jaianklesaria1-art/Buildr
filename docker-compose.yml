@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: buildr
+      POSTGRES_PASSWORD: buildr
+      POSTGRES_DB: buildr
+    ports:
+      - "5432:5432"
+    volumes:
+      - buildr_pg_data:/var/lib/postgresql/data
+
+volumes:
+  buildr_pg_data:

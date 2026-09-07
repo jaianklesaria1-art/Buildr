@@ -1,0 +1,206 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Zone {
+  JOB_SEEKER
+  EMPLOYER
+  COFOUNDER
+  FREELANCER
+  CLIENT
+}
+
+enum TargetType {
+  JOB_LISTING
+  GIG_LISTING
+  COFOUNDER_PROFILE
+}
+
+enum MatchStatus {
+  PENDING
+  MUTUAL
+  REJECTED
+}
+
+enum InteractionAction {
+  VIEWED
+  INTERESTED
+  PASSED
+  APPLIED
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  phone         String?
+  passwordHash  String
+  name          String
+  isAdmin       Boolean  @default(false)
+  zones         Zone[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  consents            ConsentRecord[]
+  jobSeekerProfile    JobSeekerProfile?
+  cofounderProfile    CofounderProfile?
+  freelancerProfile   FreelancerProfile?
+  postedJobListings   JobListing[]
+  postedGigListings   GigListing[]
+  interactions        Interaction[]
+  sentMessages        Message[]
+  matchesAsInitiator  Match[]         @relation("MatchInitiator")
+  ndaAcceptances      NdaAcceptance[]
+  sessions            Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model ConsentRecord {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  context     String
+  noticeVersion String
+  acceptedAt  DateTime @default(now())
+}
+
+model JobSeekerProfile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id])
+  skills         String[]
+  resumeUrl      String?
+  videoUrl       String?
+  location       String?
+  expectedRate   Int?
+  availability   String?
+  bio            String?
+  visibility     String   @default("MATCHED_ONLY")
+  isComplete     Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model CofounderProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id])
+  skills            String[]
+  stage             String?
+  sector            String?
+  riskTolerance     String?
+  equityExpectation String?
+  ideaSummary       String?
+  videoUrl          String?
+  location          String?
+  visibility        String   @default("MATCHED_ONLY")
+  isComplete        Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model FreelancerProfile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  skills        String[]
+  hourlyRate    Int?
+  portfolioUrl  String?
+  videoUrl      String?
+  location      String?
+  availability  String?
+  visibility    String   @default("MATCHED_ONLY")
+  isComplete    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model JobListing {
+  id             String   @id @default(cuid())
+  postedByUserId String
+  postedBy       User     @relation(fields: [postedByUserId], references: [id])
+  title          String
+  company        String
+  description    String
+  skillsRequired String[]
+  location       String?
+  stage          String?
+  createdAt      DateTime @default(now())
+}
+
+model GigListing {
+  id             String   @id @default(cuid())
+  postedByUserId String
+  postedBy       User     @relation(fields: [postedByUserId], references: [id])
+  title          String
+  description    String
+  skillsRequired String[]
+  budgetMin      Int?
+  budgetMax      Int?
+  createdAt      DateTime @default(now())
+}
+
+model Interaction {
+  id         String             @id @default(cuid())
+  userId     String
+  user       User               @relation(fields: [userId], references: [id])
+  targetType TargetType
+  targetId   String
+  action     InteractionAction
+  createdAt  DateTime           @default(now())
+
+  @@index([userId, targetType])
+  @@index([targetType, targetId])
+}
+
+model Match {
+  id            String      @id @default(cuid())
+  initiatorId   String
+  initiator     User        @relation("MatchInitiator", fields: [initiatorId], references: [id])
+  targetType    TargetType
+  targetId      String
+  status        MatchStatus @default(PENDING)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  messages       Message[]
+  ndaAcceptances NdaAcceptance[]
+
+  @@unique([initiatorId, targetType, targetId])
+  @@index([targetType, targetId])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  matchId   String
+  match     Match    @relation(fields: [matchId], references: [id])
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id])
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([matchId])
+}
+
+model NdaAcceptance {
+  id         String   @id @default(cuid())
+  matchId    String
+  match      Match    @relation(fields: [matchId], references: [id])
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  acceptedAt DateTime @default(now())
+
+  @@unique([matchId, userId])
+}
